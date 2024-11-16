@@ -1,20 +1,25 @@
 class Solution {
 public:
     vector<int> resultsArray(vector<int>& nums, int k) {
-        vector<int> res;
+        int n = nums.size();
+        if (n==1) return nums;
+        vector<int> ans(n-k+1, -1);
+        int len=1;
 
-        for(int i=0;i<=nums.size()-k;i++) {
-            int max_ele = nums[i];
-            bool isCons = true;
-            for(int j=i+1; j<i+k; j++) {
-                if(nums[j] != nums[j-1] + 1) isCons = false;
-                max_ele = max(max_ele, nums[j]);
-            }
-
-            if(isCons) res.push_back(max_ele);
-            else res.push_back(-1);
+        for (int i=1; i<k; i++) {
+            if (nums[i]==nums[i-1]+1) len++;
+            else len = 1;
         }
-        
-        return res;
+
+        if (len==k) ans[0]=nums[k-1];
+
+        for (int l=1, i=k; i<n; l++, i++) {
+            if (nums[i]==nums[i-1]+1) len++;
+            else len=1;
+
+            if (len>=k) ans[l]=nums[i];
+        }
+
+        return ans;
     }
 };
