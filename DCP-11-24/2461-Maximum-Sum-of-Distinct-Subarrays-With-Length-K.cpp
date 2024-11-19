@@ -1,28 +1,25 @@
 class Solution {
 public:
     long long maximumSubarraySum(vector<int>& nums, int k) {
-        unordered_set<int> um;
-        long long res = 0;
-
-        int i=0;
-        long long curr = 0;
+        vector<bool> um(100001, false);
+        long long res = 0, curr = 0;
         
-        for(int j=0; j<nums.size(); j++) {
-            if(um.find(nums[j]) == um.cend()) {
+        for(int j=0,i=0; j<nums.size(); j++) {
+            if(um[nums[j]] == 0) {
                 curr += nums[j];
-                um.insert(nums[j]);
+                um[nums[j]] = 1;
 
                 if(j - i + 1 == k) {
                     res = max(res, curr);
-                    
+
                     curr -= nums[i];
-                    um.erase(nums[i]);
+                    um[nums[i]] = 0;
                     i++;
                 }
             } else {
                 while(nums[i] != nums[j]) {
                     curr -= nums[i];
-                    um.erase(nums[i]);
+                    um[nums[i]] = 0;
                     i++;
                 }
                 i++;
